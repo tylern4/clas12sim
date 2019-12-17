@@ -17,7 +17,8 @@ export CLAS12DIR=/work/gothelab/clas12/software/clara/plugins/clas12
 export PATH=$PATH:$CLARA_HOME/bin:$CLAS12DIR/bin
 export DATA_DIR=/work/gothelab/clas12/simulations/data
 export HIPO_TOOLS=/work/gothelab/clas12/software
-export PATH=$PATH:$HIPO_TOOLS/bin
+export ELASTIC_GEN=/work/gothelab/clas12/software/ElasticGen
+export PATH=$PATH:$HIPO_TOOLS/bin:$ELASTIC_GEN/bin
 export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$HIPO_TOOLS/share/pkgconfig
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$HIPO_TOOLS/lib
 export PYTHONPATH=$PYTHONPATH:$HIPO_TOOLS/lib
@@ -33,8 +34,8 @@ export NUM_EVENTS=50000
 export BEAM_E=10.6041
 export W_MIN=1.0
 export W_MAX=3.5
-export Q2_MIN=0.1
-export Q2_MAX=10.0
+export Q2_MIN=0.01
+export Q2_MAX=20.0
 # Change thse to change torus and solonid for run
 export TOR=-1.0
 export SOL=-1.0
@@ -51,7 +52,7 @@ export RUN_PERIOD=rga-spring2019
 # Change type to append to simulation name
 # Doesn't change configuration but nice to change
 # Depending on the testing you want to compelte
-export TYPE="elastic_rga"
+export TYPE="elastic_rga_Q2_20"
 ##***********************************************##
 
 # Use this for simulations runs but idk why??
@@ -63,7 +64,7 @@ export NAME=${TYPE}_${NUM_EVENTS}_${BEAM_E}_${DATE}_${SLURM_JOB_ID}_${SLURM_ARRA
 res1=$(date +%s.%N)
 
 # Generate events
-root.exe -b PhaseSpace.cxx'("${DATA_DIR}/lund/${NAME}.lund",${NUM_EVENTS},${BEAM_E},${Q2_MIN},${Q2_MAX})'
+ElasticGen "${DATA_DIR}/lund/${NAME}.lund" ${NUM_EVENTS} ${BEAM_E} ${Q2_MIN} ${Q2_MAX}
 
 # Run Gemc
 singularity shell -B $DATA_DIR:$DATA_DIR \
